@@ -1,0 +1,1032 @@
+---
+import AdUnit from "./AdUnit.astro";
+import HeightScale from "./HeightScale.astro";
+---
+
+<section class="calculator-wrap" id="calculator" aria-labelledby="calculator-title">
+  <div class="calculator-card brutal-card">
+    <div class="calculator-topbar">
+      <div>
+        <span class="step-kicker">Private calculator</span>
+        <h2 id="calculator-title">Build the estimate</h2>
+      </div>
+      <div class="unit-toggle" role="group" aria-label="Measurement units">
+        <button type="button" data-unit="metric" aria-pressed="true">Metric</button>
+        <button type="button" data-unit="imperial" aria-pressed="false">US</button>
+      </div>
+    </div>
+
+    <div class="step-nav" role="tablist" aria-label="Calculator steps">
+      <button type="button" role="tab" id="tab-1" aria-controls="step-1" aria-selected="true" data-step-target="1">
+        <span>01</span> Child
+      </button>
+      <button type="button" role="tab" id="tab-2" aria-controls="step-2" aria-selected="false" data-step-target="2">
+        <span>02</span> Parents
+      </button>
+      <button type="button" role="tab" id="tab-3" aria-controls="step-3" aria-selected="false" data-step-target="3">
+        <span>03</span> Context
+      </button>
+    </div>
+
+    <form data-calculator-form>
+      <div class="step-panel" id="step-1" role="tabpanel" aria-labelledby="tab-1" data-step-panel="1">
+        <div class="panel-heading">
+          <span>Start with today's measurements</span>
+          <p>For the best comparison, measure without shoes and use a recent weight.</p>
+        </div>
+
+        <div class="field-grid">
+          <div class="form-field full-field">
+            <label for="child-name">Child's name or nickname <small>optional</small></label>
+            <input class="form-input" id="child-name" name="name" maxlength="40" autocomplete="off" placeholder="e.g. Sam" />
+          </div>
+
+          <fieldset class="form-field full-field">
+            <legend class="field-label">Biological sex used by the reference model</legend>
+            <div class="choice-pair">
+              <label><input type="radio" name="sex" value="male" checked /> <span>Boy</span></label>
+              <label><input type="radio" name="sex" value="female" /> <span>Girl</span></label>
+            </div>
+          </fieldset>
+
+          <div class="form-field age-field full-field">
+            <label for="child-age">Age <small>Khamis–Roche supports 4–17½</small></label>
+            <div class="age-controls">
+              <input id="child-age-range" type="range" min="4" max="17.5" step="0.1" value="10" aria-label="Age in years" />
+              <div class="input-suffix"><input class="form-input" id="child-age" type="number" min="4" max="17.5" step="0.1" value="10" required /><span>years</span></div>
+            </div>
+          </div>
+
+          <div class="form-field" data-metric>
+            <label for="current-height-cm">Current height</label>
+            <div class="input-suffix"><input class="form-input" id="current-height-cm" type="number" min="80" max="210" step="0.1" value="140" required /><span>cm</span></div>
+          </div>
+          <div class="form-field imperial-height" data-imperial hidden>
+            <span class="field-label">Current height</span>
+            <div class="split-height">
+              <div class="input-suffix"><input class="form-input" id="current-height-ft" type="number" min="2" max="7" step="1" value="4" required disabled /><span>ft</span></div>
+              <div class="input-suffix"><input class="form-input" id="current-height-in" type="number" min="0" max="11.9" step="0.1" value="7.1" required disabled /><span>in</span></div>
+            </div>
+          </div>
+
+          <div class="form-field" data-metric>
+            <label for="current-weight-kg">Current weight</label>
+            <div class="input-suffix"><input class="form-input" id="current-weight-kg" type="number" min="12" max="160" step="0.1" value="35" required /><span>kg</span></div>
+          </div>
+          <div class="form-field" data-imperial hidden>
+            <label for="current-weight-lb">Current weight</label>
+            <div class="input-suffix"><input class="form-input" id="current-weight-lb" type="number" min="26" max="353" step="0.1" value="77.2" required disabled /><span>lb</span></div>
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <span>Step 1 of 3</span>
+          <button class="brutal-button" type="button" data-next-step="2">Next: parents <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+
+      <div class="step-panel" id="step-2" role="tabpanel" aria-labelledby="tab-2" data-step-panel="2" hidden>
+        <div class="panel-heading">
+          <span>Add biological parent heights</span>
+          <p>The model uses the average parent height as its genetic anchor.</p>
+        </div>
+
+        <div class="field-grid parents-grid">
+          <div class="parent-visual mother" aria-hidden="true"><span>M</span><i style="height: 66%"></i></div>
+          <div class="form-field" data-metric>
+            <label for="mother-height-cm">Biological mother's height</label>
+            <div class="input-suffix"><input class="form-input" id="mother-height-cm" type="number" min="130" max="220" step="0.1" value="165" required /><span>cm</span></div>
+          </div>
+          <div class="form-field imperial-height" data-imperial hidden>
+            <span class="field-label">Biological mother's height</span>
+            <div class="split-height">
+              <div class="input-suffix"><input class="form-input" id="mother-height-ft" type="number" min="4" max="7" value="5" required disabled /><span>ft</span></div>
+              <div class="input-suffix"><input class="form-input" id="mother-height-in" type="number" min="0" max="11.9" step="0.1" value="5" required disabled /><span>in</span></div>
+            </div>
+          </div>
+
+          <div class="parent-visual father" aria-hidden="true"><span>F</span><i style="height: 82%"></i></div>
+          <div class="form-field" data-metric>
+            <label for="father-height-cm">Biological father's height</label>
+            <div class="input-suffix"><input class="form-input" id="father-height-cm" type="number" min="130" max="220" step="0.1" value="178" required /><span>cm</span></div>
+          </div>
+          <div class="form-field imperial-height" data-imperial hidden>
+            <span class="field-label">Biological father's height</span>
+            <div class="split-height">
+              <div class="input-suffix"><input class="form-input" id="father-height-ft" type="number" min="4" max="7" value="5" required disabled /><span>ft</span></div>
+              <div class="input-suffix"><input class="form-input" id="father-height-in" type="number" min="0" max="11.9" step="0.1" value="10.1" required disabled /><span>in</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="privacy-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+          <p><strong>These values stay here.</strong> Nothing is transmitted when you calculate or save a result.</p>
+        </div>
+
+        <div class="panel-actions">
+          <button class="back-button" type="button" data-back-step="1">← Back</button>
+          <span>Step 2 of 3</span>
+          <button class="brutal-button" type="button" data-next-step="3">Next: context <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+
+      <div class="step-panel" id="step-3" role="tabpanel" aria-labelledby="tab-3" data-step-panel="3" hidden>
+        <div class="panel-heading">
+          <span>Optional biological context</span>
+          <p>These answers make small, deliberately capped adjustments. They cannot diagnose growth or puberty.</p>
+        </div>
+
+        <div class="field-grid">
+          <div class="form-field full-field">
+            <label for="puberty-stage">Puberty / growth stage</label>
+            <select class="form-select" id="puberty-stage">
+              <option value="not-started">Not started</option>
+              <option value="growth-spurt" selected>Growth spurt active</option>
+              <option value="slowing">Growth is slowing</option>
+              <option value="finished">Likely finished</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="sleep-band">Average nightly sleep</label>
+            <select class="form-select" id="sleep-band">
+              <option value="under-7">Under 7 hours</option>
+              <option value="7-to-9" selected>7–9 hours</option>
+              <option value="9-plus">9+ hours</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="nutrition-rating">Nutrition rating</label>
+            <select class="form-select" id="nutrition-rating">
+              <option value="poor">Needs attention</option>
+              <option value="moderate" selected>Generally balanced</option>
+              <option value="optimal">Consistently varied</option>
+            </select>
+          </div>
+        </div>
+
+        <details class="context-details">
+          <summary>Why are these adjustments small?</summary>
+          <p>Sleep and nutrition support normal growth, but no habit guarantees extra height. Tallwise caps this contextual adjustment at 1.4 cm and keeps genetics, current measurements, and growth-curve position dominant.</p>
+        </details>
+
+        <AdUnit placement="calculator-before-cta" />
+
+        <div class="panel-actions final-actions">
+          <button class="back-button" type="button" data-back-step="2">← Back</button>
+          <span>Step 3 of 3</span>
+          <button class="brutal-button calculate-button" type="submit"><span data-submit-label>Calculate prediction</span> <span aria-hidden="true">↗</span></button>
+        </div>
+        <p class="form-error" data-form-error role="alert" hidden></p>
+      </div>
+    </form>
+  </div>
+
+  <article class="result-card brutal-card" data-result-card hidden aria-live="polite" tabindex="-1">
+    <div class="result-ribbon">Your educational estimate</div>
+    <div class="result-summary">
+      <div>
+        <span>Predicted adult height</span>
+        <strong data-result-metric>—</strong>
+        <b data-result-imperial>—</b>
+      </div>
+      <div class="result-range">
+        <span>Estimated range</span>
+        <strong data-result-range>—</strong>
+        <small data-result-range-imperial>—</small>
+      </div>
+    </div>
+
+    <div class="confidence-row">
+      <span class="confidence-chip" data-agreement>— model agreement</span>
+      <span>Current CDC stature reference: <strong data-percentile>—</strong></span>
+      <span>Context adjustment: <strong data-adjustment>—</strong></span>
+    </div>
+
+    <HeightScale />
+
+    <details class="method-details">
+      <summary>See how the models compare <span>+</span></summary>
+      <div class="method-grid">
+        <div>
+          <span>Primary</span>
+          <strong data-method-kr>—</strong>
+          <h3>Khamis–Roche</h3>
+          <p>Age-specific regression using current height, weight, and average parent height.</p>
+        </div>
+        <div>
+          <span>Genetics</span>
+          <strong data-method-tanner>—</strong>
+          <h3>Mid-parent target</h3>
+          <p>A simple genetic midpoint with a broad conventional target range.</p>
+        </div>
+        <div>
+          <span>Trajectory</span>
+          <strong data-method-cdc>—</strong>
+          <h3>CDC curve projection</h3>
+          <p>Projects today's stature-for-age z-score to the 20-year reference.</p>
+        </div>
+      </div>
+    </details>
+
+    <div class="result-footer">
+      <p><strong>Saved on this device.</strong> Recalculate over time to compare estimates. A clinician—not a calculator—should assess growth concerns.</p>
+      <button class="brutal-button secondary" type="button" data-copy-result>Copy result</button>
+    </div>
+  </article>
+</section>
+
+<script>
+  import {
+    calculatePrediction,
+    formatImperial,
+    type NutritionRating,
+    type PredictionInput,
+    type PubertyStage,
+    type SleepBand
+  } from "../utils/engine";
+  import { savePrediction } from "../utils/storage";
+
+  const form = document.querySelector<HTMLFormElement>("[data-calculator-form]");
+  const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-step-panel]"));
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-step-target]"));
+  const unitButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-unit]"));
+  const metricGroups = Array.from(document.querySelectorAll<HTMLElement>("[data-metric]"));
+  const imperialGroups = Array.from(document.querySelectorAll<HTMLElement>("[data-imperial]"));
+  let activeStep = 1;
+  let unit: "metric" | "imperial" = "metric";
+  let lastResultText = "";
+
+  const field = (id: string) => document.getElementById(id) as HTMLInputElement;
+  const select = (id: string) => document.getElementById(id) as HTMLSelectElement;
+  const numberValue = (id: string) => Number.parseFloat(field(id).value);
+
+  function setStep(step: number) {
+    activeStep = Math.max(1, Math.min(3, step));
+    panels.forEach((panel) => (panel.hidden = Number(panel.dataset.stepPanel) !== activeStep));
+    tabs.forEach((tab) => {
+      const selected = Number(tab.dataset.stepTarget) === activeStep;
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+    document.getElementById(`step-${activeStep}`)?.focus({ preventScroll: true });
+  }
+
+  function validateStep(step: number): boolean {
+    const panel = document.querySelector<HTMLElement>(`[data-step-panel="${step}"]`);
+    const inputs = Array.from(panel?.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input:not(:disabled), select:not(:disabled)") ?? []);
+    for (const input of inputs) {
+      if (!input.checkValidity()) {
+        input.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  tabs.forEach((tab) => tab.addEventListener("click", () => setStep(Number(tab.dataset.stepTarget))));
+  document.querySelectorAll<HTMLButtonElement>("[data-next-step]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (validateStep(activeStep)) setStep(Number(button.dataset.nextStep));
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>("[data-back-step]").forEach((button) => {
+    button.addEventListener("click", () => setStep(Number(button.dataset.backStep)));
+  });
+
+  const ageRange = field("child-age-range");
+  const ageNumber = field("child-age");
+  ageRange.addEventListener("input", () => (ageNumber.value = ageRange.value));
+  ageNumber.addEventListener("input", () => (ageRange.value = ageNumber.value));
+
+  function cmToFeetInches(cm: number): [number, number] {
+    const total = cm / 2.54;
+    const feet = Math.floor(total / 12);
+    return [feet, Math.round((total - feet * 12) * 10) / 10];
+  }
+
+  function feetInchesToCm(feet: number, inches: number): number {
+    return (feet * 12 + inches) * 2.54;
+  }
+
+  function syncMetricToImperial() {
+    for (const prefix of ["current-height", "mother-height", "father-height"]) {
+      const [feet, inches] = cmToFeetInches(numberValue(`${prefix}-cm`));
+      field(`${prefix}-ft`).value = String(feet);
+      field(`${prefix}-in`).value = String(inches);
+    }
+    field("current-weight-lb").value = (numberValue("current-weight-kg") * 2.2046226218).toFixed(1);
+  }
+
+  function syncImperialToMetric() {
+    for (const prefix of ["current-height", "mother-height", "father-height"]) {
+      field(`${prefix}-cm`).value = feetInchesToCm(numberValue(`${prefix}-ft`), numberValue(`${prefix}-in`)).toFixed(1);
+    }
+    field("current-weight-kg").value = (numberValue("current-weight-lb") / 2.2046226218).toFixed(1);
+  }
+
+  function setUnit(nextUnit: "metric" | "imperial") {
+    if (nextUnit === unit) return;
+    if (nextUnit === "imperial") syncMetricToImperial();
+    else syncImperialToMetric();
+    unit = nextUnit;
+
+    metricGroups.forEach((group) => {
+      group.hidden = unit !== "metric";
+      group.querySelectorAll<HTMLInputElement>("input").forEach((input) => (input.disabled = unit !== "metric"));
+    });
+    imperialGroups.forEach((group) => {
+      group.hidden = unit !== "imperial";
+      group.querySelectorAll<HTMLInputElement>("input").forEach((input) => (input.disabled = unit !== "imperial"));
+    });
+    unitButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.unit === unit)));
+  }
+
+  unitButtons.forEach((button) => button.addEventListener("click", () => setUnit(button.dataset.unit as "metric" | "imperial")));
+
+  function getInput(): PredictionInput {
+    if (unit === "imperial") syncImperialToMetric();
+    const checkedSex = form?.querySelector<HTMLInputElement>('input[name="sex"]:checked')?.value ?? "male";
+    return {
+      name: field("child-name").value.trim(),
+      sex: checkedSex as "male" | "female",
+      ageYears: numberValue("child-age"),
+      currentHeightCm: numberValue("current-height-cm"),
+      currentWeightKg: numberValue("current-weight-kg"),
+      motherHeightCm: numberValue("mother-height-cm"),
+      fatherHeightCm: numberValue("father-height-cm"),
+      pubertyStage: select("puberty-stage").value as PubertyStage,
+      sleep: select("sleep-band").value as SleepBand,
+      nutrition: select("nutrition-rating").value as NutritionRating
+    };
+  }
+
+  function setText(selector: string, value: string) {
+    const element = document.querySelector<HTMLElement>(selector);
+    if (element) element.textContent = value;
+  }
+
+  function scaleX(cm: number): number {
+    return 42 + ((Math.max(145, Math.min(200, cm)) - 145) / 55) * 616;
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const error = document.querySelector<HTMLElement>("[data-form-error]");
+    const label = document.querySelector<HTMLElement>("[data-submit-label]");
+    if (error) error.hidden = true;
+    if (label) label.textContent = "Calculating…";
+
+    try {
+      const input = getInput();
+      const result = await calculatePrediction(input);
+      savePrediction(input, result);
+
+      setText("[data-result-metric]", `${result.estimateCm.toFixed(1)} cm`);
+      setText("[data-result-imperial]", formatImperial(result.estimateCm));
+      setText("[data-result-range]", `${result.lowCm.toFixed(1)}–${result.highCm.toFixed(1)} cm`);
+      setText("[data-result-range-imperial]", `${formatImperial(result.lowCm)}–${formatImperial(result.highCm)}`);
+      setText("[data-agreement]", `${result.agreement} model agreement`);
+      setText("[data-percentile]", `${result.percentile}${result.percentile === 1 ? "st" : result.percentile === 2 ? "nd" : result.percentile === 3 ? "rd" : "th"} percentile`);
+      setText("[data-adjustment]", `${result.lifestyleAdjustmentCm > 0 ? "+" : ""}${result.lifestyleAdjustmentCm.toFixed(1)} cm`);
+      setText("[data-method-kr]", `${result.khamisRocheCm.toFixed(1)} cm`);
+      setText("[data-method-tanner]", `${result.tannerCm.toFixed(1)} cm`);
+      setText("[data-method-cdc]", `${result.cdcCm.toFixed(1)} cm`);
+
+      const estimateMarker = document.querySelector<SVGGElement>("[data-estimate-marker]");
+      const range = document.querySelector<SVGRectElement>("[data-height-range]");
+      const averageMarker = document.querySelector<SVGGElement>("[data-average-marker]");
+      const average = input.sex === "male" ? 176.9 : 163.3;
+      estimateMarker?.setAttribute("transform", `translate(${scaleX(result.estimateCm)} 0)`);
+      range?.setAttribute("x", String(scaleX(result.lowCm)));
+      range?.setAttribute("width", String(Math.max(8, scaleX(result.highCm) - scaleX(result.lowCm))));
+      averageMarker?.setAttribute("transform", `translate(${scaleX(average) - 400} 0)`);
+      setText("[data-estimate-label]", `${result.estimateCm.toFixed(1)} cm`);
+      setText("[data-average-label]", `${input.sex === "male" ? "Male" : "Female"} CDC age-20 median`);
+
+      lastResultText = `${input.name || "Height estimate"}: ${result.estimateCm.toFixed(1)} cm (${formatImperial(result.estimateCm)}), estimated range ${result.lowCm.toFixed(1)}–${result.highCm.toFixed(1)} cm. Educational estimate from Tallwise.`;
+      const card = document.querySelector<HTMLElement>("[data-result-card]");
+      if (card) {
+        card.hidden = false;
+        card.focus();
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } catch (caught) {
+      if (error) {
+        error.textContent = caught instanceof Error ? caught.message : "We couldn't calculate that result. Please review the measurements.";
+        error.hidden = false;
+      }
+    } finally {
+      if (label) label.textContent = "Calculate prediction";
+    }
+  });
+
+  form?.addEventListener("invalid", (event) => {
+    const target = event.target as HTMLElement;
+    const panel = target.closest<HTMLElement>("[data-step-panel]");
+    if (panel) setStep(Number(panel.dataset.stepPanel));
+  }, true);
+
+  document.querySelector<HTMLButtonElement>("[data-copy-result]")?.addEventListener("click", async (event) => {
+    if (!lastResultText) return;
+    await navigator.clipboard.writeText(lastResultText);
+    const button = event.currentTarget as HTMLButtonElement;
+    const original = button.textContent;
+    button.textContent = "Copied";
+    window.setTimeout(() => (button.textContent = original), 1800);
+  });
+</script>
+
+<style>
+  .calculator-wrap {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .calculator-card {
+    overflow: hidden;
+  }
+
+  .calculator-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 3px solid var(--color-ink);
+    padding: 1.25rem clamp(1rem, 4vw, 2rem);
+    background: var(--color-sky);
+  }
+
+  .calculator-topbar > div:first-child {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .step-kicker,
+  .panel-heading > span {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .calculator-topbar h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.45rem);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .unit-toggle {
+    display: flex;
+    border: 2px solid var(--color-ink);
+    background: white;
+  }
+
+  .unit-toggle button {
+    min-width: 70px;
+    border: 0;
+    padding: 0.55rem 0.75rem;
+    background: transparent;
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .unit-toggle button + button {
+    border-left: 2px solid var(--color-ink);
+  }
+
+  .unit-toggle button[aria-pressed="true"] {
+    background: var(--color-ink);
+    color: white;
+  }
+
+  .step-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 3px solid var(--color-ink);
+  }
+
+  .step-nav button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 66px;
+    border: 0;
+    padding: 0.7rem;
+    background: #f3f0e5;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .step-nav button + button {
+    border-left: 3px solid var(--color-ink);
+  }
+
+  .step-nav button[aria-selected="true"] {
+    background: var(--color-sun);
+  }
+
+  .step-nav span {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border: 2px solid var(--color-ink);
+    background: white;
+    font-size: 0.68rem;
+  }
+
+  .step-panel {
+    padding: clamp(1.25rem, 4vw, 2.2rem);
+  }
+
+  .panel-heading {
+    display: grid;
+    gap: 0.45rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .panel-heading > span {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 3vw, 1.65rem);
+    letter-spacing: -0.025em;
+  }
+
+  .panel-heading p {
+    max-width: 650px;
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .full-field {
+    grid-column: 1 / -1;
+  }
+
+  label small {
+    margin-left: 0.4rem;
+    color: #686868;
+    font-size: 0.65rem;
+  }
+
+  fieldset {
+    min-width: 0;
+    margin: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  .choice-pair {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .choice-pair label {
+    cursor: pointer;
+  }
+
+  .choice-pair input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .choice-pair span {
+    display: grid;
+    min-height: 54px;
+    place-items: center;
+    border: 3px solid var(--color-ink);
+    background: white;
+    box-shadow: 3px 3px 0 rgba(23, 23, 23, 0.2);
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .choice-pair input:checked + span {
+    background: var(--color-lime);
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
+
+  .choice-pair input:focus-visible + span {
+    outline: 4px solid var(--color-sky);
+    outline-offset: 3px;
+  }
+
+  .age-controls {
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-coral);
+  }
+
+  .input-suffix {
+    position: relative;
+  }
+
+  .input-suffix .form-input {
+    padding-right: 3.2rem;
+  }
+
+  .input-suffix > span {
+    position: absolute;
+    top: 50%;
+    right: 0.85rem;
+    color: #666;
+    font-size: 0.72rem;
+    font-weight: 900;
+    transform: translateY(-50%);
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  .split-height {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .panel-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.8rem;
+    border-top: 2px solid var(--color-ink);
+    padding-top: 1.25rem;
+  }
+
+  .panel-actions > span {
+    color: #666;
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .panel-actions:has(.back-button) {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .back-button {
+    border: 0;
+    padding: 0.7rem 0;
+    background: transparent;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .parents-grid {
+    grid-template-columns: 72px 1fr 1fr;
+    align-items: end;
+  }
+
+  .parent-visual {
+    position: relative;
+    display: flex;
+    height: 110px;
+    align-items: flex-end;
+    justify-content: center;
+    border-bottom: 3px solid var(--color-ink);
+    background: repeating-linear-gradient(to top, transparent 0 19px, rgba(23, 23, 23, 0.18) 20px 21px);
+  }
+
+  .parent-visual i {
+    display: block;
+    width: 26px;
+    border: 3px solid var(--color-ink);
+    border-bottom: 0;
+    background: var(--color-violet);
+  }
+
+  .parent-visual.father i {
+    background: var(--color-sky);
+  }
+
+  .parent-visual span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 0.65rem;
+    font-weight: 900;
+  }
+
+  .privacy-note {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.4rem;
+    border: 2px solid var(--color-ink);
+    padding: 0.8rem;
+    background: var(--color-lime);
+  }
+
+  .privacy-note svg {
+    width: 28px;
+    flex: 0 0 auto;
+  }
+
+  .privacy-note p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .context-details {
+    margin: 1.35rem 0;
+    border: 2px solid var(--color-ink);
+    padding: 0.8rem 1rem;
+    background: #f3f0e5;
+  }
+
+  .context-details summary {
+    font-size: 0.8rem;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .context-details p {
+    margin-bottom: 0;
+    color: #555;
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+
+  .calculate-button {
+    min-width: 230px;
+    background: var(--color-coral);
+  }
+
+  .form-error {
+    margin: 1rem 0 0;
+    border: 2px solid var(--color-ink);
+    padding: 0.8rem;
+    background: #ffd0c9;
+    font-weight: 800;
+  }
+
+  .result-card {
+    position: relative;
+    scroll-margin-top: 6.5rem;
+    padding: clamp(1.25rem, 4vw, 2.4rem);
+    background: var(--color-lime);
+  }
+
+  .result-ribbon {
+    position: absolute;
+    top: 1rem;
+    right: -0.6rem;
+    border: 2px solid var(--color-ink);
+    padding: 0.45rem 0.7rem;
+    background: var(--color-sun);
+    box-shadow: 3px 3px 0 var(--color-ink);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(2deg);
+  }
+
+  .result-summary {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+    align-items: end;
+    padding: 1rem 0 1.5rem;
+  }
+
+  .result-summary > div {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .result-summary span {
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .result-summary > div:first-child > strong {
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 8vw, 6.4rem);
+    line-height: 0.9;
+    letter-spacing: -0.08em;
+  }
+
+  .result-summary b {
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+  }
+
+  .result-range {
+    border-left: 3px solid var(--color-ink);
+    padding-left: 1.5rem;
+  }
+
+  .result-range strong {
+    font-size: clamp(1.35rem, 3vw, 2rem);
+  }
+
+  .result-range small {
+    font-weight: 800;
+  }
+
+  .confidence-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .confidence-row > span {
+    border: 2px solid var(--color-ink);
+    padding: 0.45rem 0.6rem;
+    background: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .confidence-chip {
+    background: var(--color-sky) !important;
+    font-weight: 900 !important;
+    text-transform: uppercase;
+  }
+
+  .method-details {
+    margin-top: 1rem;
+    border-top: 3px solid var(--color-ink);
+    border-bottom: 3px solid var(--color-ink);
+  }
+
+  .method-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .method-details summary span {
+    font-size: 1.5rem;
+  }
+
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding-bottom: 1.2rem;
+  }
+
+  .method-grid > div {
+    border: 2px solid var(--color-ink);
+    padding: 1rem;
+    background: white;
+  }
+
+  .method-grid span {
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .method-grid strong {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 1.5rem;
+  }
+
+  .method-grid h3 {
+    margin: 0.7rem 0 0.25rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+  }
+
+  .method-grid p {
+    margin: 0;
+    color: #555;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .result-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.4rem;
+    padding-top: 1.2rem;
+  }
+
+  .result-footer p {
+    max-width: 700px;
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 700px) {
+    .calculator-topbar {
+      align-items: flex-start;
+    }
+
+    .step-nav button {
+      min-height: 56px;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.68rem;
+    }
+
+    .step-nav span {
+      width: 24px;
+      height: 24px;
+    }
+
+    .field-grid,
+    .result-summary,
+    .method-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .age-controls {
+      grid-template-columns: 1fr;
+    }
+
+    .parents-grid {
+      grid-template-columns: 44px 1fr;
+    }
+
+    .parents-grid [data-imperial],
+    .parents-grid [data-metric] {
+      grid-column: 2;
+    }
+
+    .parent-visual {
+      grid-column: 1;
+      height: 100px;
+    }
+
+    .parent-visual.father {
+      grid-row: 2;
+    }
+
+    .panel-actions,
+    .panel-actions:has(.back-button) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .panel-actions > span {
+      display: none;
+    }
+
+    .panel-actions .brutal-button {
+      grid-column: 2;
+      min-width: 0;
+    }
+
+    .result-ribbon {
+      position: static;
+      width: fit-content;
+      margin-left: auto;
+    }
+
+    .result-range {
+      border-top: 3px solid var(--color-ink);
+      border-left: 0;
+      padding-top: 1rem;
+      padding-left: 0;
+    }
+
+    .result-footer {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>

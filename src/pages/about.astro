@@ -1,0 +1,523 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  name: "Tallwise Science, Methodology & Transparency",
+  description: "How Tallwise combines adult-height prediction models, where its reference data comes from, and what the result cannot tell you.",
+  url: new URL("/about/", Astro.site).toString(),
+  lastReviewed: "2026-07-20",
+  about: {
+    "@type": "MedicalCondition",
+    name: "Human growth and stature"
+  },
+  medicalAudience: { "@type": "PeopleAudience", audienceType: "Parents and caregivers" },
+  isPartOf: { "@type": "WebSite", name: "Tallwise", url: Astro.site?.toString() },
+  citation: [
+    "Khamis HJ, Roche AF. Predicting adult stature without using skeletal age: the Khamis-Roche method. Pediatrics. 1994;94(4):504-507.",
+    "Centers for Disease Control and Prevention. CDC Growth Charts: Stature-for-age LMS data, ages 2 to 20."
+  ]
+};
+---
+
+<Layout
+  title="Science, Methodology & Transparency | Tallwise"
+  description="Read how Tallwise calculates adult-height estimates using Khamis–Roche, mid-parental target height, and CDC growth reference data."
+  schema={schema}
+>
+  <header class="about-hero">
+    <div class="shell about-hero-grid">
+      <div>
+        <p class="eyebrow">Science without the smoke</p>
+        <h1 class="display-title">Show the<br /><em>working.</em></h1>
+      </div>
+      <div class="hero-statement brutal-card">
+        <span>Our standard</span>
+        <strong>Useful uncertainty beats false precision.</strong>
+        <p>Tallwise exposes each component estimate, widens the range when models disagree, and keeps subjective modifiers small.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-section overview-section">
+    <div class="shell section-grid">
+      <div class="sticky-title">
+        <p class="eyebrow">01 / Architecture</p>
+        <h2 class="section-title">What happens when you tap calculate?</h2>
+      </div>
+      <div class="prose-tallwise">
+        <p>Your browser validates the measurements, converts US inputs to metric and then to the original units required by each formula, loads the bundled CDC reference table, and calculates three independent estimates. No request containing a measurement leaves the device.</p>
+        <div class="flow brutal-card">
+          <span>Your inputs</span><b>→</b><span>3 models</span><b>→</b><span>Weighted center</span><b>→</b><span>Range</span>
+        </div>
+        <p>Khamis–Roche receives 55% of the composite weight, the mid-parent target receives 25%, and the CDC trajectory receives 20%. A contextual adjustment for broad growth stage, sleep, and nutrition is capped between −1.4 cm and +0.7 cm. These weights are a transparent product design choice, not a validated clinical ensemble.</p>
+        <p>The displayed range expands for younger ages and when the three models disagree. It is an educational planning band, not a guaranteed confidence interval for an individual child.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section model-section">
+    <div class="shell">
+      <div class="models-heading">
+        <div>
+          <p class="eyebrow">02 / The models</p>
+          <h2 class="section-title">Different inputs.<br />Different blind spots.</h2>
+        </div>
+        <p>Agreement can be reassuring, but it does not remove uncertainty. Disagreement is information too.</p>
+      </div>
+      <div class="model-list">
+        <article class="brutal-card">
+          <span>55%</span>
+          <div>
+            <small>Primary estimate</small>
+            <h3>Khamis–Roche regression</h3>
+            <p>Uses chronological age, biological sex, current stature, current weight, and average biological parent stature. Tallwise uses the erratum-corrected half-year coefficient tables from ages 4 to 17.5 and interpolates between rows for fractional ages.</p>
+            <p><strong>Key limitation:</strong> the original model was developed from white American children in the Fels Longitudinal Study who did not have conditions that alter growth. It is not equally validated for every population or clinical circumstance.</p>
+          </div>
+        </article>
+        <article class="brutal-card">
+          <span>25%</span>
+          <div>
+            <small>Genetic anchor</small>
+            <h3>Tanner mid-parent target</h3>
+            <p>For boys, Tallwise adds 13 cm to the two-parent total and divides by two. For girls, it subtracts 13 cm before dividing. The familiar ±8.5 cm band illustrates broad family variation.</p>
+            <p><strong>Key limitation:</strong> it does not use current growth, puberty timing, health, or the wider family pattern.</p>
+          </div>
+        </article>
+        <article class="brutal-card">
+          <span>20%</span>
+          <div>
+            <small>Trajectory view</small>
+            <h3>CDC stature-for-age projection</h3>
+            <p>The app interpolates the CDC L, M, and S parameters for the child's age, converts height to a z-score, and maps that standardized position to the age-20 reference. The full local JSON is derived from the CDC's published stature-for-age CSV.</p>
+            <p><strong>Key limitation:</strong> maintaining the same percentile is an illustration, not a CDC adult-height prediction. Children can change percentile paths, particularly around puberty.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section equation-section">
+    <div class="shell section-grid">
+      <div class="sticky-title">
+        <p class="eyebrow">03 / Formula view</p>
+        <h2 class="section-title">The math, in plain sight.</h2>
+      </div>
+      <div>
+        <div class="equation brutal-card">
+          <span>Khamis–Roche</span>
+          <code>adult height = b₀ + b₁(height) + b₂(weight) + b₃(mid-parent height)</code>
+          <p>The b-values change with age and sex. Original units: inches and pounds.</p>
+        </div>
+        <div class="equation brutal-card">
+          <span>CDC LMS z-score</span>
+          <code>z = ((height ÷ M)ᴸ − 1) ÷ (L × S)</code>
+          <p>L describes skew, M is the median, and S is the generalized coefficient of variation.</p>
+        </div>
+        <div class="equation brutal-card">
+          <span>Composite</span>
+          <code>0.55(KR) + 0.25(parent target) + 0.20(CDC) + context</code>
+          <p>The context term is deliberately capped and should never be interpreted as centimeters a habit can guarantee.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section limitations-section">
+    <div class="shell limitation-grid">
+      <div>
+        <p class="eyebrow">04 / Boundaries</p>
+        <h2 class="section-title">What Tallwise cannot know.</h2>
+      </div>
+      <ul>
+        <li><span>01</span><p>Bone age, clinical puberty assessment, growth velocity from verified records, or a full medical history.</p></li>
+        <li><span>02</span><p>Whether a growth pattern is healthy, abnormal, or affected by a medical condition or medication.</p></li>
+        <li><span>03</span><p>The exact effect of ancestry, environment, family genetics, illness, or future developmental timing.</p></li>
+        <li><span>04</span><p>Whether an entered measurement is accurate. A precise decimal does not make an uncertain input reliable.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page-section references-section">
+    <div class="shell section-grid">
+      <div class="sticky-title">
+        <p class="eyebrow">05 / Sources</p>
+        <h2 class="section-title">Read the source material.</h2>
+      </div>
+      <div class="reference-list">
+        <a class="brutal-card" href="https://pubmed.ncbi.nlm.nih.gov/7936860/" rel="noreferrer">
+          <span>Research paper</span>
+          <strong>Khamis & Roche, 1994 — Predicting adult stature without skeletal age</strong>
+          <i>PubMed ↗</i>
+        </a>
+        <a class="brutal-card" href="https://www.cdc.gov/growthcharts/cdc-data-files.htm" rel="noreferrer">
+          <span>Reference data</span>
+          <strong>CDC stature-for-age LMS parameters and selected percentiles</strong>
+          <i>CDC ↗</i>
+        </a>
+        <a class="brutal-card" href="https://medlineplus.gov/ency/article/001910.htm" rel="noreferrer">
+          <span>Clinical context</span>
+          <strong>MedlinePlus — how growth charts are used and interpreted</strong>
+          <i>MedlinePlus ↗</i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="disclaimer-section">
+    <div class="shell disclaimer brutal-card">
+      <span>Medical disclaimer</span>
+      <div>
+        <h2>Educational information, never medical advice.</h2>
+        <p>Tallwise does not diagnose, prevent, or treat any condition. Its estimates are not a substitute for professional assessment, growth monitoring, or an individualized care plan. If you are concerned about a child's growth, puberty, nutrition, sleep, or health, consult a qualified health professional.</p>
+      </div>
+      <a class="brutal-button dark" href="/#calculator">Use calculator</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .about-hero {
+    border-bottom: 3px solid var(--color-ink);
+    padding: clamp(3rem, 8vw, 7rem) 0;
+    background: var(--color-lime);
+  }
+
+  .about-hero-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 0.65fr;
+    align-items: end;
+    gap: clamp(2rem, 7vw, 6rem);
+  }
+
+  .about-hero-grid > div:first-child {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .display-title em {
+    color: var(--color-coral);
+    font-style: normal;
+    text-shadow: 4px 4px 0 var(--color-ink);
+    -webkit-text-stroke: 3px var(--color-ink);
+  }
+
+  .hero-statement {
+    display: grid;
+    gap: 0.7rem;
+    padding: 1.4rem;
+    background: white;
+    transform: rotate(1.5deg);
+  }
+
+  .hero-statement span,
+  .model-list small,
+  .equation > span,
+  .reference-list span {
+    font-size: 0.67rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-statement strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.3rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .hero-statement p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .section-grid {
+    display: grid;
+    grid-template-columns: 0.72fr 1.28fr;
+    gap: clamp(2rem, 7vw, 6rem);
+  }
+
+  .sticky-title {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sticky-title > * {
+    position: sticky;
+    top: 7rem;
+  }
+
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: 2rem 0;
+    padding: 1.2rem;
+    background: var(--color-sky);
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .flow b {
+    font-size: 1.2rem;
+  }
+
+  .model-section {
+    border-block: 3px solid var(--color-ink);
+    background: var(--color-violet);
+  }
+
+  .models-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .models-heading > div {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .models-heading > p {
+    max-width: 400px;
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .model-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .model-list article {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+  }
+
+  .model-list article > span {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+  }
+
+  .model-list h3 {
+    margin: 0.4rem 0 0.8rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  .model-list p {
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .model-list p + p {
+    margin-top: 0.8rem;
+  }
+
+  .equation-section {
+    background: #f3f0e5;
+  }
+
+  .equation-section .section-grid > div:last-child {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .equation {
+    padding: 1.3rem;
+    background: white;
+  }
+
+  .equation code {
+    display: block;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 2px solid var(--color-ink);
+    padding: 1rem;
+    background: var(--color-ink);
+    color: var(--color-lime);
+    font-size: clamp(0.85rem, 2vw, 1.15rem);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .equation p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .limitations-section {
+    border-block: 3px solid var(--color-ink);
+    background: var(--color-coral);
+  }
+
+  .limitation-grid {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: clamp(2rem, 7vw, 6rem);
+  }
+
+  .limitation-grid > div {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .limitation-grid ul {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border-top: 3px solid var(--color-ink);
+    padding: 0;
+    list-style: none;
+  }
+
+  .limitation-grid li {
+    display: grid;
+    grid-template-columns: 55px 1fr;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 3px solid var(--color-ink);
+    padding: 1rem 0;
+  }
+
+  .limitation-grid li span {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 2px solid var(--color-ink);
+    background: white;
+    font-family: var(--font-display);
+  }
+
+  .limitation-grid li p {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .references-section {
+    background: var(--color-paper);
+  }
+
+  .reference-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .reference-list a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.6rem 1rem;
+    padding: 1.2rem;
+    background: white;
+    text-decoration: none;
+  }
+
+  .reference-list a:hover {
+    background: var(--color-sun);
+  }
+
+  .reference-list span {
+    grid-column: 1 / -1;
+  }
+
+  .reference-list strong {
+    line-height: 1.4;
+  }
+
+  .reference-list i {
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .disclaimer-section {
+    border-top: 3px solid var(--color-ink);
+    padding: 4rem 0;
+    background: var(--color-sun);
+  }
+
+  .disclaimer {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--color-lime);
+  }
+
+  .disclaimer > span {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .disclaimer h2 {
+    margin: 0 0 0.45rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  .disclaimer p {
+    margin: 0;
+    font-size: 0.87rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 800px) {
+    .about-hero-grid,
+    .section-grid,
+    .limitation-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .sticky-title > * {
+      position: static;
+    }
+
+    .models-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .disclaimer {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .flow {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .flow b {
+      transform: rotate(90deg);
+    }
+
+    .model-list article {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

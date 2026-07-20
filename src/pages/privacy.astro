@@ -1,0 +1,97 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Privacy Policy | Tallwise"
+  description="Tallwise processes height predictions in your browser and stores optional history only on your device. Read the complete privacy policy."
+>
+  <header class="legal-hero">
+    <div class="shell">
+      <p class="eyebrow">Plain-language policy</p>
+      <h1 class="display-title">Your data<br />stays <em>yours.</em></h1>
+      <p>Effective July 20, 2026 · Default privacy-first build</p>
+    </div>
+  </header>
+  <article class="shell legal-body prose-tallwise">
+    <div class="summary brutal-card">
+      <strong>The short version</strong>
+      <p>Tallwise does not need an account or database. Measurements are processed in your browser. Prediction history is stored only in that browser's localStorage and can be cleared from the app or browser settings.</p>
+    </div>
+
+    <h2>Information Tallwise processes</h2>
+    <p>When you use the calculator, the page processes the values you enter: optional name or nickname, biological sex used by the reference model, age, current height and weight, biological parent heights, broad growth stage, sleep band, and nutrition rating. The calculation happens locally in JavaScript. The default build does not transmit those values to a Tallwise server.</p>
+
+    <h2>Local prediction history</h2>
+    <p>After a calculation, Tallwise saves the inputs, result, and date in localStorage on the current device. This makes the history panel work without an account. Anyone with access to the same browser profile may be able to view that history.</p>
+    <p>You can remove individual records or use “Clear all” in the history panel. Clearing site data in your browser also removes the history. Tallwise cannot recover deleted local records.</p>
+
+    <h2>Cookies, analytics, and tracking</h2>
+    <p>The shipped default configuration does not set analytics cookies, create tracking identifiers, or connect to a tracking database. The service worker stores public app files in the browser cache so the app can work offline; this cache does not contain an account profile.</p>
+
+    <h2>Advertising is disabled by default</h2>
+    <p>The codebase includes reserved ad placements, but no third-party ad script loads unless a site operator explicitly provides advertising configuration at build time. Enabling Google AdSense or another advertising provider can introduce cookies, device information processing, and third-party data collection. A site operator who enables ads must replace this default policy with disclosures and consent controls appropriate to the provider and applicable law.</p>
+
+    <h2>Hosting and request logs</h2>
+    <p>Cloudflare Pages serves static files. Like most hosting and network providers, Cloudflare may process ordinary request information such as IP address, requested path, browser details, timestamps, and security signals to deliver and protect the site. Tallwise does not combine those infrastructure logs with calculator inputs.</p>
+
+    <h2>Children's privacy</h2>
+    <p>Tallwise is intended for use by parents, caregivers, or individuals old enough to understand the tool. Do not enter a child's full legal name or other identifying information. The nickname field is optional and exists only to distinguish local history records.</p>
+
+    <h2>External links</h2>
+    <p>Advice and methodology pages link to sources such as PubMed, CDC, MedlinePlus, and other public-health resources. Their privacy practices apply after you follow those links.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If site features change—especially analytics, advertising, accounts, or server storage—this policy must be updated before those features are enabled. The effective date at the top will change when the policy changes.</p>
+
+    <h2>Questions</h2>
+    <p>This project does not ship with a contact-data collection form. The deploying site operator should add a contact address here before a public launch if required.</p>
+  </article>
+</Layout>
+
+<style>
+  .legal-hero {
+    border-bottom: 3px solid var(--color-ink);
+    padding: clamp(3rem, 8vw, 6rem) 0;
+    background: var(--color-lime);
+  }
+
+  .legal-hero .shell {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .legal-hero em {
+    color: var(--color-coral);
+    font-style: normal;
+    text-shadow: 4px 4px 0 var(--color-ink);
+    -webkit-text-stroke: 3px var(--color-ink);
+  }
+
+  .legal-hero p:last-child {
+    margin: 0;
+    font-size: 0.76rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .legal-body {
+    max-width: 850px;
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .summary {
+    margin-bottom: 3rem;
+    padding: 1.3rem;
+    background: var(--color-sky);
+  }
+
+  .summary strong {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+
+  .summary p {
+    margin-bottom: 0;
+  }
+</style>

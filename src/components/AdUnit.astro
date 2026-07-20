@@ -1,0 +1,80 @@
+---
+interface Props {
+  placement: string;
+  format?: "banner" | "native" | "article";
+}
+
+const { placement, format = "banner" } = Astro.props;
+const client = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+const slot = import.meta.env.PUBLIC_ADSENSE_SLOT;
+const enabled = Boolean(client && slot);
+---
+
+<aside class:list={["ad-unit", `ad-${format}`]} aria-label="Advertisement" data-placement={placement}>
+  <span>Advertisement</span>
+  {enabled ? (
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client={client}
+      data-ad-slot={slot}
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    ></ins>
+  ) : (
+    <div class="ad-placeholder" aria-hidden="true">
+      <b>Reserved for a thoughtful partner</b>
+      <small>Ads are off in this privacy-first build.</small>
+    </div>
+  )}
+</aside>
+
+{enabled && (
+  <script is:inline>
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (_) {}
+  </script>
+)}
+
+<style>
+  .ad-unit {
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .ad-unit > span {
+    color: #686868;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ad-placeholder {
+    display: flex;
+    min-height: 92px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.25rem;
+    border: 2px dashed #777;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.66);
+    color: #555;
+    text-align: center;
+  }
+
+  .ad-native .ad-placeholder {
+    min-height: 150px;
+    background: var(--color-sky);
+  }
+
+  .ad-article .ad-placeholder {
+    min-height: 120px;
+    background: #f1eee2;
+  }
+
+  .ad-placeholder small {
+    font-size: 0.72rem;
+  }
+</style>

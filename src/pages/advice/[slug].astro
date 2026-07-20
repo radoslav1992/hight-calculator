@@ -1,0 +1,28 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("advice");
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<"advice">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const related = (await getCollection("advice"))
+  .filter((candidate) => candidate.id !== entry.id)
+  .sort((a, b) => {
+    const categoryMatchA = Number(a.data.category === entry.data.category);
+    const categoryMatchB = Number(b.data.category === entry.data.category);
+    return categoryMatchB - categoryMatchA || Number(b.data.featured) - Number(a.data.featured);
+  })
+  .slice(0, 3);
+---
+
+<ArticleLayout entry={entry} related={related}>
+  <Content />
+</ArticleLayout>

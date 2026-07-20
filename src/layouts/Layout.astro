@@ -1,0 +1,107 @@
+---
+import { pwaInfo } from "virtual:pwa-info";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PwaToast from "../components/PwaToast.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  schema?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const {
+  title,
+  description,
+  image = "/social-card.png",
+  noindex = false,
+  schema
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(image, Astro.site);
+const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Tallwise",
+  url: Astro.site?.toString(),
+  description: "A private, educational adult-height estimator for families.",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: `${Astro.site}advice/?q={search_term_string}`,
+    "query-input": "required name=search_term_string"
+  }
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#171717" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="preload" href="/cdc-growth-data.json" as="fetch" crossorigin="anonymous" />
+    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tallwise" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+
+    <title>{title}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
+    {schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script>}
+    {adsenseClient && (
+      <script
+        is:inline
+        async
+        crossorigin="anonymous"
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+      ></script>
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <PwaToast />
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: fixed;
+    z-index: 999;
+    top: 0.6rem;
+    left: 0.6rem;
+    border: 3px solid var(--color-ink);
+    padding: 0.65rem;
+    background: var(--color-sun);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    font-weight: 900;
+    transform: translateY(-150%);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="You're Offline | Tallwise"
+  description="Tallwise offline fallback page. Previously cached calculator and guide pages remain available without a connection."
+  noindex={true}
+>
+  <section class="offline-page">
+    <div class="offline-card brutal-card">
+      <div class="offline-art" aria-hidden="true">
+        <svg viewBox="0 0 180 180"><path d="M38 112a52 52 0 0 1 91-42M21 76a76 76 0 0 1 127-31M59 139a26 26 0 0 1 46-14" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="square" /><path d="m28 28 124 124" stroke="currentColor" stroke-width="14" /><circle cx="90" cy="151" r="9" fill="currentColor" /></svg>
+      </div>
+      <div>
+        <p class="eyebrow">Connection paused</p>
+        <h1>Still growing.<br />Just offline.</h1>
+        <p>If you have opened Tallwise before, the calculator and cached guides may still work. Otherwise, reconnect once so the app can finish saving its offline files.</p>
+        <div class="offline-actions">
+          <button class="brutal-button" type="button" onclick="window.location.reload()">Try again</button>
+          <a class="brutal-button secondary" href="/">Open calculator</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .offline-page {
+    display: grid;
+    min-height: 70vh;
+    place-items: center;
+    padding: 3rem 1rem;
+    background: var(--color-sky);
+  }
+
+  .offline-card {
+    display: grid;
+    width: min(860px, 100%);
+    grid-template-columns: 0.7fr 1.3fr;
+    overflow: hidden;
+    background: white;
+  }
+
+  .offline-art {
+    display: grid;
+    place-items: center;
+    border-right: 3px solid var(--color-ink);
+    background: var(--color-coral);
+  }
+
+  .offline-art svg {
+    width: min(75%, 220px);
+  }
+
+  .offline-card > div:last-child {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.5rem, 5vw, 3.5rem);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    letter-spacing: -0.07em;
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+
+  p:not(.eyebrow) {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .offline-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 650px) {
+    .offline-card {
+      grid-template-columns: 1fr;
+    }
+
+    .offline-art {
+      min-height: 220px;
+      border-right: 0;
+      border-bottom: 3px solid var(--color-ink);
+    }
+  }
+</style>

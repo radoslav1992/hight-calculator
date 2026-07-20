@@ -1,0 +1,86 @@
+<div class="pwa-toast brutal-card" data-pwa-toast hidden role="status" aria-live="polite">
+  <div>
+    <strong data-pwa-title>Ready offline</strong>
+    <p data-pwa-message>Tallwise is ready to use without a connection.</p>
+  </div>
+  <button type="button" data-pwa-refresh hidden>Refresh</button>
+  <button type="button" data-pwa-close aria-label="Dismiss notification">×</button>
+</div>
+
+<script>
+  import { registerSW } from "virtual:pwa-register";
+
+  const toast = document.querySelector<HTMLElement>("[data-pwa-toast]");
+  const title = toast?.querySelector<HTMLElement>("[data-pwa-title]");
+  const message = toast?.querySelector<HTMLElement>("[data-pwa-message]");
+  const refresh = toast?.querySelector<HTMLButtonElement>("[data-pwa-refresh]");
+  const close = toast?.querySelector<HTMLButtonElement>("[data-pwa-close]");
+
+  const showToast = () => {
+    if (!toast) return;
+    toast.hidden = false;
+    window.setTimeout(() => {
+      if (toast) toast.hidden = true;
+    }, 9000);
+  };
+
+  const updateSW = registerSW({
+    immediate: true,
+    onOfflineReady() {
+      if (title) title.textContent = "Ready offline";
+      if (message) message.textContent = "Tallwise is cached and ready without a connection.";
+      showToast();
+    },
+    onNeedRefresh() {
+      if (title) title.textContent = "Update available";
+      if (message) message.textContent = "Refresh to use the latest Tallwise version.";
+      if (refresh) refresh.hidden = false;
+      showToast();
+    }
+  });
+
+  refresh?.addEventListener("click", () => updateSW(true));
+  close?.addEventListener("click", () => {
+    if (toast) toast.hidden = true;
+  });
+</script>
+
+<style>
+  .pwa-toast {
+    position: fixed;
+    z-index: 100;
+    right: 1.2rem;
+    bottom: 1.2rem;
+    display: grid;
+    max-width: min(430px, calc(100% - 2.4rem));
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: var(--color-sun);
+  }
+
+  .pwa-toast strong {
+    display: block;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+
+  .pwa-toast p {
+    margin: 0.2rem 0 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .pwa-toast button {
+    border: 2px solid var(--color-ink);
+    padding: 0.45rem 0.65rem;
+    background: white;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .pwa-toast button:last-child {
+    font-size: 1.2rem;
+  }
+</style>

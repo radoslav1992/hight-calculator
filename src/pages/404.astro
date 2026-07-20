@@ -1,0 +1,65 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Page Not Found | Tallwise" description="The requested Tallwise page could not be found." noindex={true}>
+  <section class="not-found">
+    <div class="shell">
+      <span>404</span>
+      <h1>That page<br />didn't grow here.</h1>
+      <p>The link may be outdated, but the calculator is right where you left it.</p>
+      <div>
+        <a class="brutal-button" href="/">Go to calculator</a>
+        <a class="brutal-button secondary" href="/advice/">Browse advice</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    min-height: 70vh;
+    border-bottom: 3px solid var(--color-ink);
+    padding: clamp(4rem, 10vw, 8rem) 0;
+    background: var(--color-coral);
+  }
+
+  .not-found .shell {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  .not-found > .shell > span {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 18vw, 13rem);
+    letter-spacing: -0.09em;
+    line-height: 0.7;
+    -webkit-text-stroke: 4px var(--color-ink);
+    color: var(--color-sun);
+    text-shadow: 7px 7px 0 var(--color-ink);
+  }
+
+  h1 {
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    letter-spacing: -0.07em;
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+
+  p {
+    max-width: 560px;
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .not-found .shell > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.7rem;
+  }
+</style>

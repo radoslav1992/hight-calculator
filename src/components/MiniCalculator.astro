@@ -1,0 +1,136 @@
+<aside class="mini-calculator brutal-card" aria-labelledby="mini-title">
+  <span class="mini-label">Quick genetic check</span>
+  <h2 id="mini-title">Parent-height midpoint</h2>
+  <p>Use the simple Tanner target while you read. The full calculator adds age, height, weight, and CDC context.</p>
+  <form data-mini-form>
+    <label>
+      Child's sex
+      <select class="form-select" name="sex">
+        <option value="male">Boy</option>
+        <option value="female">Girl</option>
+      </select>
+    </label>
+    <label>
+      Mother's height
+      <div class="mini-input"><input class="form-input" name="mother" type="number" min="130" max="220" value="165" required /><span>cm</span></div>
+    </label>
+    <label>
+      Father's height
+      <div class="mini-input"><input class="form-input" name="father" type="number" min="130" max="220" value="178" required /><span>cm</span></div>
+    </label>
+    <button class="brutal-button" type="submit">Estimate midpoint</button>
+  </form>
+  <div class="mini-result" data-mini-result hidden aria-live="polite">
+    <span>Genetic target midpoint</span>
+    <strong data-mini-value>—</strong>
+    <small data-mini-range>—</small>
+  </div>
+  <a href="/#calculator">Open the full calculator →</a>
+</aside>
+
+<script>
+  import { formatImperial } from "../utils/engine";
+
+  document.querySelectorAll<HTMLFormElement>("[data-mini-form]").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const mother = Number(data.get("mother"));
+      const father = Number(data.get("father"));
+      const sex = data.get("sex");
+      const midpoint = (mother + father + (sex === "male" ? 13 : -13)) / 2;
+      const result = form.parentElement?.querySelector<HTMLElement>("[data-mini-result]");
+      const value = form.parentElement?.querySelector<HTMLElement>("[data-mini-value]");
+      const range = form.parentElement?.querySelector<HTMLElement>("[data-mini-range]");
+      if (value) value.textContent = `${midpoint.toFixed(1)} cm · ${formatImperial(midpoint)}`;
+      if (range) range.textContent = `Broad target range: ${(midpoint - 8.5).toFixed(1)}–${(midpoint + 8.5).toFixed(1)} cm`;
+      if (result) result.hidden = false;
+    });
+  });
+</script>
+
+<style>
+  .mini-calculator {
+    padding: 1.2rem;
+    background: var(--color-sun);
+  }
+
+  .mini-label {
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0.35rem 0 0.6rem;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    font-size: 0.83rem;
+    line-height: 1.5;
+  }
+
+  form {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  label {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .mini-input {
+    position: relative;
+  }
+
+  .mini-input span {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+  }
+
+  .mini-input input {
+    padding-right: 2.8rem;
+  }
+
+  .mini-result {
+    display: grid;
+    gap: 0.2rem;
+    margin: 1rem 0;
+    border: 3px solid var(--color-ink);
+    padding: 0.8rem;
+    background: white;
+  }
+
+  .mini-result span,
+  .mini-result small {
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .mini-result strong {
+    font-size: 1.2rem;
+  }
+
+  aside > a {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-underline-offset: 3px;
+    text-transform: uppercase;
+  }
+</style>

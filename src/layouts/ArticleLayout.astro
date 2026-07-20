@@ -1,0 +1,377 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "./Layout.astro";
+import MiniCalculator from "../components/MiniCalculator.astro";
+import AdUnit from "../components/AdUnit.astro";
+
+interface Props {
+  entry: CollectionEntry<"advice">;
+  related: CollectionEntry<"advice">[];
+}
+
+const { entry, related } = Astro.props;
+const { title, description, category, readTime, updated, faq } = entry.data;
+const canonical = new URL(`/advice/${entry.id}/`, Astro.site);
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    dateModified: updated.toISOString(),
+    datePublished: updated.toISOString(),
+    mainEntityOfPage: canonical.toString(),
+    author: { "@type": "Organization", name: "Tallwise Editorial Team" },
+    publisher: { "@type": "Organization", name: "Tallwise", url: Astro.site?.toString() }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: Astro.site?.toString() },
+      { "@type": "ListItem", position: 2, name: "Advice", item: new URL("/advice/", Astro.site).toString() },
+      { "@type": "ListItem", position: 3, name: title, item: canonical.toString() }
+    ]
+  },
+  ...(faq.length
+    ? [{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faq.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: { "@type": "Answer", text: item.answer }
+        }))
+      }]
+    : [])
+];
+---
+
+<Layout title={`${title} | Tallwise`} description={description} schema={schema}>
+  <header class="article-hero">
+    <div class="shell">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>/</span><a href="/advice/">Advice</a><span>/</span><span aria-current="page">{category}</span>
+      </nav>
+      <div class="article-meta">
+        <span>{category}</span>
+        <span>{readTime}</span>
+        <span>Updated {updated.toLocaleDateString("en", { month: "short", year: "numeric" })}</span>
+      </div>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </div>
+  </header>
+
+  <div class="shell article-layout">
+    <article class="prose-tallwise article-body">
+      <slot />
+      <div class="inline-ad" data-inline-ad>
+        <AdUnit placement={`article-${entry.id}-inline`} format="article" />
+      </div>
+      {faq.length > 0 && (
+        <section class="faq-section" aria-labelledby="faq-title">
+          <h2 id="faq-title">Common questions</h2>
+          {faq.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </section>
+      )}
+    </article>
+    <div class="article-sidebar">
+      <MiniCalculator />
+      <div class="medical-note">
+        <strong>Read this first</strong>
+        <p>Growth charts and height calculators are educational tools. Bring persistent concerns or an unexpected change in growth pattern to a qualified health professional.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="related page-section">
+    <div class="shell">
+      <div class="related-heading">
+        <div>
+          <p class="eyebrow">Keep learning</p>
+          <h2 class="section-title">Related guides</h2>
+        </div>
+        <a class="brutal-button secondary" href="/advice/">All advice</a>
+      </div>
+      <div class="related-grid">
+        {related.map((item, index) => (
+          <a class="related-card brutal-card" href={`/advice/${item.id}/`}>
+            <span>0{index + 1}</span>
+            <small>{item.data.category} · {item.data.readTime}</small>
+            <strong>{item.data.title}</strong>
+            <i>Read guide →</i>
+          </a>
+        ))}
+      </div>
+      <div class="calculator-cta brutal-card">
+        <div>
+          <span>Ready for your numbers?</span>
+          <strong>Turn the research into a private estimate.</strong>
+        </div>
+        <a class="brutal-button dark" href="/#calculator">Open calculator →</a>
+      </div>
+      <AdUnit placement={`article-${entry.id}-bottom`} />
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const article = document.querySelector<HTMLElement>(".article-body");
+  const inlineAd = article?.querySelector<HTMLElement>("[data-inline-ad]");
+  const headings = article ? Array.from(article.querySelectorAll<HTMLElement>(":scope > h2")) : [];
+  const anchorHeading = headings[2];
+
+  if (article && inlineAd && anchorHeading) {
+    let anchor: Element = anchorHeading;
+    let paragraphs = 0;
+    while (anchor.nextElementSibling && !anchor.nextElementSibling.matches("h2")) {
+      anchor = anchor.nextElementSibling;
+      if (anchor.matches("p")) paragraphs += 1;
+      if (paragraphs >= 2) break;
+    }
+    anchor.insertAdjacentElement("afterend", inlineAd);
+  }
+</script>
+
+<style>
+  .article-hero {
+    border-bottom: 3px solid var(--color-ink);
+    padding: clamp(2.5rem, 7vw, 6rem) 0;
+    background: var(--color-sky);
+  }
+
+  .breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .breadcrumbs a {
+    text-underline-offset: 3px;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .article-meta span {
+    border: 2px solid var(--color-ink);
+    padding: 0.35rem 0.55rem;
+    background: white;
+    box-shadow: 2px 2px 0 var(--color-ink);
+    font-size: 0.67rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .article-hero h1 {
+    max-width: 1000px;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.7rem, 8vw, 6.6rem);
+    letter-spacing: -0.07em;
+    line-height: 0.91;
+    text-transform: uppercase;
+  }
+
+  .article-hero > .shell > p {
+    max-width: 760px;
+    margin: 1.5rem 0 0;
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: clamp(2rem, 6vw, 5rem);
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .article-body {
+    min-width: 0;
+  }
+
+  .inline-ad {
+    margin-block: 2.5rem;
+  }
+
+  .article-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .article-sidebar > :global(*) {
+    position: sticky;
+    top: 6.5rem;
+  }
+
+  .medical-note {
+    border: 3px solid var(--color-ink);
+    padding: 1rem;
+    background: var(--color-coral);
+    box-shadow: 5px 5px 0 var(--color-ink);
+  }
+
+  .medical-note strong {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+
+  .medical-note p {
+    margin: 0.5rem 0 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+
+  .faq-section details {
+    border-top: 2px solid var(--color-ink);
+    padding: 1rem 0;
+  }
+
+  .faq-section details:last-child {
+    border-bottom: 2px solid var(--color-ink);
+  }
+
+  .faq-section summary {
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .faq-section p {
+    margin-bottom: 0;
+  }
+
+  .related {
+    border-top: 3px solid var(--color-ink);
+    background: var(--color-violet);
+  }
+
+  .related-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .related-heading > div {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .related-card {
+    display: flex;
+    min-height: 240px;
+    flex-direction: column;
+    padding: 1.2rem;
+    background: white;
+    text-decoration: none;
+  }
+
+  .related-card:hover {
+    background: var(--color-sun);
+  }
+
+  .related-card > span {
+    font-family: var(--font-display);
+    font-size: 2rem;
+  }
+
+  .related-card small {
+    margin: 1rem 0 0.55rem;
+    font-size: 0.65rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .related-card strong {
+    font-size: 1.15rem;
+    line-height: 1.25;
+  }
+
+  .related-card i {
+    margin-top: auto;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .calculator-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 3rem 0;
+    padding: clamp(1.2rem, 4vw, 2rem);
+    background: var(--color-lime);
+  }
+
+  .calculator-cta > div {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .calculator-cta span {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .calculator-cta strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3vw, 2.3rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 900px) {
+    .article-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .article-sidebar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .article-sidebar > :global(*) {
+      position: static;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .related-grid,
+    .article-sidebar {
+      grid-template-columns: 1fr;
+    }
+
+    .related-heading,
+    .calculator-cta {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>

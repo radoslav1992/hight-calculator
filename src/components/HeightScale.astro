@@ -1,0 +1,120 @@
+<div class="height-scale" aria-label="Predicted height compared with adult reference averages">
+  <div class="scale-heading">
+    <div>
+      <span>Visual height scale</span>
+      <strong>Your estimate in context</strong>
+    </div>
+    <span class="scale-note">Reference comparison, not a ranking</span>
+  </div>
+
+  <svg viewBox="0 0 700 150" role="img" aria-labelledby="height-scale-title height-scale-desc">
+    <title id="height-scale-title">Adult height estimate scale</title>
+    <desc id="height-scale-desc">A scale from 145 to 200 centimeters showing the predicted range and reference adult averages.</desc>
+    <line class="axis" x1="42" x2="658" y1="100" y2="100"></line>
+    {[145, 155, 165, 175, 185, 195, 200].map((value) => {
+      const x = 42 + ((value - 145) / 55) * 616;
+      return (
+        <g>
+          <line class="tick" x1={x} x2={x} y1="92" y2="108"></line>
+          <text x={x} y="128" text-anchor="middle">{value}</text>
+        </g>
+      );
+    })}
+    <g class="average-marker" data-average-marker>
+      <line x1="400" x2="400" y1="72" y2="108"></line>
+      <text x="400" y="61" text-anchor="middle" data-average-label>Adult reference</text>
+    </g>
+    <rect class="range" data-height-range x="330" y="88" width="80" height="24" rx="2"></rect>
+    <g class="estimate-marker" data-estimate-marker transform="translate(370 0)">
+      <path d="M0 16 14 37H-14Z"></path>
+      <line x1="0" x2="0" y1="37" y2="112"></line>
+      <text x="0" y="12" text-anchor="middle" data-estimate-label>—</text>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .height-scale {
+    border-top: 3px solid var(--color-ink);
+    padding-top: 1.35rem;
+  }
+
+  .scale-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .scale-heading div {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .scale-heading span {
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .scale-heading strong {
+    font-size: 1.1rem;
+  }
+
+  .scale-note {
+    color: #666;
+    text-align: right;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .axis,
+  .tick {
+    stroke: var(--color-ink);
+    stroke-width: 3;
+  }
+
+  text {
+    fill: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .average-marker line {
+    stroke: #777;
+    stroke-dasharray: 5 4;
+    stroke-width: 2;
+  }
+
+  .average-marker text {
+    fill: #555;
+    font-size: 11px;
+  }
+
+  .range {
+    fill: var(--color-sky);
+    stroke: var(--color-ink);
+    stroke-width: 3;
+  }
+
+  .estimate-marker path {
+    fill: var(--color-coral);
+    stroke: var(--color-ink);
+    stroke-width: 3;
+  }
+
+  .estimate-marker line {
+    stroke: var(--color-ink);
+    stroke-width: 3;
+  }
+
+  .estimate-marker text {
+    font-size: 13px;
+  }
+</style>

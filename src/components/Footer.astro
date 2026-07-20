@@ -1,0 +1,118 @@
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <a class="footer-brand" href="/">Tallwise</a>
+      <p>A calmer way to understand the numbers behind growing up.</p>
+      <span class="privacy-chip">Private by design · no account</span>
+    </div>
+
+    <div>
+      <h2>Explore</h2>
+      <a href="/">Height calculator</a>
+      <a href="/advice/">Growth advice</a>
+      <a href="/about/">Science & methodology</a>
+    </div>
+
+    <div>
+      <h2>Legal</h2>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/offline/">Offline mode</a>
+    </div>
+  </div>
+  <div class="shell fine-print">
+    <p>© {new Date().getFullYear()} Tallwise. Educational estimates only—not medical advice.</p>
+    <p>Made for the edge. Calculated on your device.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 3px solid var(--color-ink);
+    padding: 3.5rem 0 1.5rem;
+    background: var(--color-ink);
+    color: white;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .footer-grid > div {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 900;
+    letter-spacing: -0.07em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .footer-grid p {
+    max-width: 32rem;
+    margin: 0;
+    color: #d7d7d7;
+    line-height: 1.6;
+  }
+
+  .footer-grid h2 {
+    margin: 0 0 0.4rem;
+    color: var(--color-lime);
+    font-size: 0.77rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-grid a:not(.footer-brand) {
+    font-weight: 800;
+    text-underline-offset: 4px;
+  }
+
+  .privacy-chip {
+    margin-top: 0.5rem;
+    border: 2px solid white;
+    padding: 0.4rem 0.6rem;
+    color: var(--color-lime);
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .fine-print {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    border-top: 1px solid #555;
+    padding-top: 1.2rem;
+    color: #aaa;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .fine-print p {
+    margin: 0;
+  }
+
+  @media (max-width: 700px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-grid > div:first-child {
+      grid-column: 1 / -1;
+    }
+
+    .fine-print {
+      flex-direction: column;
+    }
+  }
+</style>

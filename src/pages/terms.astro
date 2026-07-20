@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Terms of Use | Tallwise"
+  description="Terms for using the Tallwise educational child height calculator, local history, offline app, and growth advice content."
+>
+  <header class="legal-hero">
+    <div class="shell">
+      <p class="eyebrow">Terms of use</p>
+      <h1 class="display-title">Curiosity,<br /><em>with limits.</em></h1>
+      <p>Effective July 20, 2026</p>
+    </div>
+  </header>
+  <article class="shell legal-body prose-tallwise">
+    <div class="summary brutal-card">
+      <strong>By using Tallwise</strong>
+      <p>You agree to use it as an educational estimation tool, not as a medical service, diagnosis, treatment recommendation, or guarantee of adult height.</p>
+    </div>
+
+    <h2>Educational purpose only</h2>
+    <p>Tallwise provides mathematical estimates and general information. It does not provide medical advice and does not create a clinician-patient relationship. A qualified health professional should assess concerns about growth, puberty, nutrition, sleep, or health.</p>
+
+    <h2>No guarantee of accuracy</h2>
+    <p>Predictions depend on the values entered, assumptions in population models, and biological factors the app cannot observe. Results may be incomplete, unsuitable for a particular child, or different from final adult height. Do not make medical, nutritional, financial, educational, or sporting decisions based on a Tallwise result.</p>
+
+    <h2>Appropriate use</h2>
+    <p>Do not use Tallwise to pressure, shame, rank, or discriminate against a child or another person. Do not attempt to manipulate a result through unsafe changes to diet, weight, sleep, supplements, medication, or physical activity.</p>
+
+    <h2>Your responsibility for inputs and local data</h2>
+    <p>You are responsible for the measurements you enter and for deciding whether to save them on a shared device. Tallwise cannot verify inputs, recover cleared browser data, or protect a browser profile that another person can access.</p>
+
+    <h2>Age and supervision</h2>
+    <p>The tool is intended for responsible use by parents, caregivers, and people capable of understanding its limitations. A minor should use the tool with appropriate adult support. Do not enter a full legal name or other identifying details.</p>
+
+    <h2>Third-party sources and services</h2>
+    <p>Tallwise links to research and public-health websites. Those sites control their own content and terms. A deployed version may later enable third-party advertising; the operator of that version is responsible for clear disclosure, consent, and legal compliance.</p>
+
+    <h2>Availability and changes</h2>
+    <p>The app may change, become unavailable, or update its models without notice. Saved history may be lost through browser settings, storage limits, app updates, or device changes. Keep any important health record in an appropriate system instead.</p>
+
+    <h2>Disclaimer of warranties</h2>
+    <p>To the fullest extent permitted by law, Tallwise is provided “as is” and “as available,” without warranties of accuracy, fitness for a particular purpose, availability, or non-infringement.</p>
+
+    <h2>Limitation of liability</h2>
+    <p>To the fullest extent permitted by applicable law, the project authors and site operator are not liable for loss or harm arising from reliance on an estimate, use or inability to use the app, or loss of locally stored history.</p>
+
+    <h2>Operator details</h2>
+    <p>This starter project does not include the deploying operator's legal entity, jurisdiction, or contact address. Those details should be completed before a commercial public launch.</p>
+  </article>
+</Layout>
+
+<style>
+  .legal-hero {
+    border-bottom: 3px solid var(--color-ink);
+    padding: clamp(3rem, 8vw, 6rem) 0;
+    background: var(--color-violet);
+  }
+
+  .legal-hero .shell {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .legal-hero em {
+    color: var(--color-sun);
+    font-style: normal;
+    text-shadow: 4px 4px 0 var(--color-ink);
+    -webkit-text-stroke: 3px var(--color-ink);
+  }
+
+  .legal-hero p:last-child {
+    margin: 0;
+    font-size: 0.76rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .legal-body {
+    max-width: 850px;
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .summary {
+    margin-bottom: 3rem;
+    padding: 1.3rem;
+    background: var(--color-sun);
+  }
+
+  .summary strong {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+
+  .summary p {
+    margin-bottom: 0;
+  }
+</style>
