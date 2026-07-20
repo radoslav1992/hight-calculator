@@ -38,9 +38,9 @@ This runs `astro check`, generates all static pages, and creates `dist/sw.js` wi
 npm run preview
 ```
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare Workers
 
-Connect the repository from **Cloudflare Dashboard → Workers & Pages → Create application → Pages → Import an existing Git repository**.
+Connect the repository from **Cloudflare Dashboard → Workers & Pages → Create application → Import a repository**. The site is deployed as a static-assets Worker: Cloudflare serves the generated files directly from its edge without running application code or moving calculations off the client.
 
 Use these build settings:
 
@@ -48,18 +48,19 @@ Use these build settings:
 | --- | --- |
 | Production branch | `main` |
 | Build command | `npm run build` |
-| Build directory | `dist` |
+| Deploy command | `npx wrangler deploy` |
 | Node version | `22` |
 
 Set `PUBLIC_SITE_URL` to the final HTTPS origin before the production build, for example `https://height.example.com`. Astro uses it for canonicals, social metadata, robots, and the sitemap.
 
-For a direct upload after authenticating Wrangler:
+For a direct deployment after authenticating Wrangler:
 
 ```bash
-npx wrangler pages deploy dist --project-name tallwise-height-calculator
+npm run build
+npm run deploy
 ```
 
-No Astro Cloudflare adapter is needed because this project intentionally uses static SSG output and no server runtime.
+The `assets.directory` setting in `wrangler.jsonc` points Wrangler at `dist`, preserves Astro's clean-URL behavior, and serves the generated `404.html` for unknown routes. No Astro Cloudflare adapter or Worker entry point is needed because this project intentionally uses static SSG output and no server runtime.
 
 ## Advertising
 
