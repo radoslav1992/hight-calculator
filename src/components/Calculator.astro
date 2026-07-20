@@ -92,29 +92,33 @@ import HeightScale from "./HeightScale.astro";
         </div>
 
         <div class="field-grid parents-grid">
-          <div class="parent-visual mother" aria-hidden="true"><span>M</span><i style="height: 66%"></i></div>
-          <div class="form-field" data-metric>
-            <label for="mother-height-cm">Biological mother's height</label>
-            <div class="input-suffix"><input class="form-input" id="mother-height-cm" type="number" min="130" max="220" step="0.1" value="165" required /><span>cm</span></div>
-          </div>
-          <div class="form-field imperial-height" data-imperial hidden>
-            <span class="field-label">Biological mother's height</span>
-            <div class="split-height">
-              <div class="input-suffix"><input class="form-input" id="mother-height-ft" type="number" min="4" max="7" value="5" required disabled /><span>ft</span></div>
-              <div class="input-suffix"><input class="form-input" id="mother-height-in" type="number" min="0" max="11.9" step="0.1" value="5" required disabled /><span>in</span></div>
+          <div class="parent-entry">
+            <div class="parent-visual mother" aria-hidden="true"><span>M</span><i style="height: 66%"></i></div>
+            <div class="form-field" data-metric>
+              <label for="mother-height-cm">Biological mother's height</label>
+              <div class="input-suffix"><input class="form-input" id="mother-height-cm" type="number" min="130" max="220" step="0.1" value="165" required /><span>cm</span></div>
+            </div>
+            <div class="form-field imperial-height" data-imperial hidden>
+              <span class="field-label">Biological mother's height</span>
+              <div class="split-height">
+                <div class="input-suffix"><input class="form-input" id="mother-height-ft" type="number" min="4" max="7" value="5" required disabled /><span>ft</span></div>
+                <div class="input-suffix"><input class="form-input" id="mother-height-in" type="number" min="0" max="11.9" step="0.1" value="5" required disabled /><span>in</span></div>
+              </div>
             </div>
           </div>
 
-          <div class="parent-visual father" aria-hidden="true"><span>F</span><i style="height: 82%"></i></div>
-          <div class="form-field" data-metric>
-            <label for="father-height-cm">Biological father's height</label>
-            <div class="input-suffix"><input class="form-input" id="father-height-cm" type="number" min="130" max="220" step="0.1" value="178" required /><span>cm</span></div>
-          </div>
-          <div class="form-field imperial-height" data-imperial hidden>
-            <span class="field-label">Biological father's height</span>
-            <div class="split-height">
-              <div class="input-suffix"><input class="form-input" id="father-height-ft" type="number" min="4" max="7" value="5" required disabled /><span>ft</span></div>
-              <div class="input-suffix"><input class="form-input" id="father-height-in" type="number" min="0" max="11.9" step="0.1" value="10.1" required disabled /><span>in</span></div>
+          <div class="parent-entry">
+            <div class="parent-visual father" aria-hidden="true"><span>F</span><i style="height: 82%"></i></div>
+            <div class="form-field" data-metric>
+              <label for="father-height-cm">Biological father's height</label>
+              <div class="input-suffix"><input class="form-input" id="father-height-cm" type="number" min="130" max="220" step="0.1" value="178" required /><span>cm</span></div>
+            </div>
+            <div class="form-field imperial-height" data-imperial hidden>
+              <span class="field-label">Biological father's height</span>
+              <div class="split-height">
+                <div class="input-suffix"><input class="form-input" id="father-height-ft" type="number" min="4" max="7" value="5" required disabled /><span>ft</span></div>
+                <div class="input-suffix"><input class="form-input" id="father-height-in" type="number" min="0" max="11.9" step="0.1" value="10.1" required disabled /><span>in</span></div>
+              </div>
             </div>
           </div>
         </div>
@@ -702,8 +706,26 @@ import HeightScale from "./HeightScale.astro";
   }
 
   .parents-grid {
-    grid-template-columns: 72px 1fr 1fr;
+    align-items: start;
+  }
+
+  .parent-entry {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: 72px minmax(0, 1fr);
     align-items: end;
+    gap: 1.25rem;
+  }
+
+  .parent-entry > .parent-visual {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .parent-entry > .form-field {
+    min-width: 0;
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .parent-visual {
@@ -980,21 +1002,16 @@ import HeightScale from "./HeightScale.astro";
     }
 
     .parents-grid {
-      grid-template-columns: 44px 1fr;
+      grid-template-columns: 1fr;
     }
 
-    .parents-grid [data-imperial],
-    .parents-grid [data-metric] {
-      grid-column: 2;
+    .parent-entry {
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 0.8rem;
     }
 
-    .parent-visual {
-      grid-column: 1;
+    .parent-entry .parent-visual {
       height: 100px;
-    }
-
-    .parent-visual.father {
-      grid-row: 2;
     }
 
     .panel-actions,
